@@ -1,28 +1,44 @@
+import streamlit as st
 import os
 import time
 from pinecone import Pinecone, ServerlessSpec
-from sentence_transformers import SentenceTransformer  
-from models.gemini_client import GeminiClient
-import numpy as np
-from typing import List, Dict, Any
-import json
-import requests
-from bs4 import BeautifulSoup
-from docx import Document
-import urllib.request
-from pathlib import Path
+# ... other imports
+
+class RAGEngine:
+    def __init__(self):
+        print("Initializing Production ADGM RAG Engine...")
+        
+        # Streamlit secrets integration for Pinecone
+        try:
+            api_key = st.secrets['PINECONE_API_KEY']
+        except (KeyError, FileNotFoundError, AttributeError):
+            api_key = os.getenv('PINECONE_API_KEY')
+            if not api_key:
+                raise ValueError("PINECONE_API_KEY not found in secrets or environment")
+        
+        self.pc = Pinecone(api_key=api_key)
+        
+        try:
+            self.index_name = st.secrets.get('PINECONE_INDEX_NAME', 'adgm-legal-docs')
+        except (KeyError, FileNotFoundError, AttributeError):
+            self.index_name = os.getenv('PINECONE_INDEX_NAME', 'adgm-legal-docs')
 
 class RAGEngine:
     def __init__(self):
         print("Initializing Production ADGM RAG Engine...")
         
         # Initialize Pinecone
-        api_key = os.getenv('PINECONE_API_KEY')
-        if not api_key:
-            raise ValueError("PINECONE_API_KEY environment variable not set")
+        try:
+            api_key = st.secrets['PINECONE_API_KEY']
+        except (KeyError, FileNotFoundError, AttributeError):
+            api_key = os.getenv('PINECONE_API_KEY')
+            if not api_key:
+                raise ValueError("PINECONE_API_KEY not found in Streamlit secrets or environment variables")
         
-        self.pc = Pinecone(api_key=api_key)
-        self.index_name = os.getenv('PINECONE_INDEX_NAME', 'adgm-legal-docs')
+        try:
+            self.index_name = st.secrets.get('PINECONE_INDEX_NAME', 'adgm-legal-docs')
+        except (KeyError, FileNotFoundError, AttributeError):
+            self.index_name = os.getenv('PINECONE_INDEX_NAME', 'adgm-legal-docs')
         
         # Create documents directory
         self.docs_dir = Path("official_adgm_documents")
