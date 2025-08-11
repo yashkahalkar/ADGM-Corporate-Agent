@@ -1,8 +1,18 @@
 import streamlit as st
 import os
 import time
+from pathlib import Path
 from pinecone import Pinecone, ServerlessSpec
-# ... other imports
+from sentence_transformers import SentenceTransformer  
+from models.gemini_client import GeminiClient
+import numpy as np
+from typing import List, Dict, Any
+import json
+import requests
+from bs4 import BeautifulSoup
+from docx import Document
+import urllib.request
+
 
 class RAGEngine:
     def __init__(self):
