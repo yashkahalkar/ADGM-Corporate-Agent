@@ -1,29 +1,15 @@
-# Core ML/AI packages (install these first)
-huggingface_hub==0.25.2
-transformers==4.38.0
-sentence-transformers==2.2.2
-pinecone==3.0.0
+# Core app dependencies
+streamlit
+google-generativeai
+pinecone
+python-docx
+python-dotenv
+pandas
+requests
+sentence-transformers
 
-# Streamlit and UI
-streamlit==1.28.0
-streamlit-option-menu==0.3.6
-
-# AI/Language Models
-google-generativeai==0.3.2
-langchain==0.0.350
-
-# Document processing
-python-docx==0.8.11
-PyPDF2==3.0.1
-
-# Data processing
-pandas==2.1.0
-numpy==1.24.3
-
-# Web scraping
-requests==2.31.0
-beautifulsoup4==4.12.2
-
-# Utilities
-python-dotenv==1.0.0
-openpyxl==3.1.2
+# Additional dependencies
+beautifulsoup4
+PyPDF2
+openpyxl
+numpy
