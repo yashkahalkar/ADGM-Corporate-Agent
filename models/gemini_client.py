@@ -1,15 +1,28 @@
+import streamlit as st
 import google.generativeai as genai
 import os
-from typing import Optional, Dict
-import time
-import json
+from typing import Optional
+# ... other imports
 
 class GeminiClient:
     def __init__(self):
-        # Configure Gemini
+        # Streamlit secrets integration for Gemini
+        try:
+            api_key = st.secrets['GEMINI_API_KEY']
+        except (KeyError, FileNotFoundError, AttributeError):
+            api_key = os.getenv('GEMINI_API_KEY')
+            if not api_key:
+                raise ValueError("GEMINI_API_KEY not found in secrets or environment")
+        
+        genai.configure(api_key=api_key)
+
+class GeminiClient:
+    try:
+        api_key = st.secrets['GEMINI_API_KEY']
+    except (KeyError, FileNotFoundError, AttributeError):
         api_key = os.getenv('GEMINI_API_KEY')
         if not api_key:
-            raise ValueError("GEMINI_API_KEY environment variable not set")
+            raise ValueError("GEMINI_API_KEY not found in Streamlit secrets or environment variables")
         
         genai.configure(api_key=api_key)
         
